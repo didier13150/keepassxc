@@ -34,7 +34,8 @@ int main(int argc, char** argv)
     Tools::disableCoreDumps();
 #endif
     Tools::setupSearchPaths();
-
+    
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     Application app(argc, argv);
     Application::setApplicationName("keepassxc");
     Application::setApplicationVersion(KEEPASSX_VERSION);
