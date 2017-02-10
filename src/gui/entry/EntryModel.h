@@ -33,7 +33,9 @@ public:
         ParentGroup = 0,
         Title = 1,
         Username = 2,
-        Url = 3
+        Url = 3,
+        Notes = 4,
+        Total = 5
     };
 
     explicit EntryModel(QObject* parent = nullptr);

@@ -117,7 +117,7 @@ int EntryModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
 
-    return 4;
+    return static_cast<int>(EntryModel::Total);
 }
 
 QVariant EntryModel::data(const QModelIndex& index, int role) const
@@ -141,6 +141,8 @@ QVariant EntryModel::data(const QModelIndex& index, int role) const
             return entry->username();
         case Url:
             return entry->url();
+        case Notes:
+            return entry->notes();
         }
     }
     else if (role == Qt::DecorationRole) {
@@ -181,6 +183,8 @@ QVariant EntryModel::headerData(int section, Qt::Orientation orientation, int ro
             return tr("Username");
         case Url:
             return tr("URL");
+        case Notes:
+            return tr("Notes");
         }
     }
 
