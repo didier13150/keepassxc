@@ -34,6 +34,10 @@ class InactivityTimer;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    
+#if defined(Q_OS_LINUX)
+    Q_CLASSINFO("D-Bus Interface", "org.keepassxc.MainWindow")
+#endif
 
 public:
     MainWindow();
@@ -43,6 +47,7 @@ public Q_SLOTS:
     void openDatabase(const QString& fileName, const QString& pw = QString(),
                       const QString& keyFile = QString());
     void appExit();
+    void closeAllDatabases();
 
 protected:
      void closeEvent(QCloseEvent* event) override;

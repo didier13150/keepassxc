@@ -46,6 +46,13 @@
 #include "gui/SettingsWidget.h"
 #include "gui/PasswordGeneratorWidget.h"
 
+#ifdef WITH_XC_DBUS
+#if defined(Q_OS_LINUX)
+#include <QtDBus>
+#include "gui/MainWindowAdaptor.h"
+#endif
+#endif
+
 #ifdef WITH_XC_HTTP
 class HttpPlugin: public ISettingsPage
 {
@@ -89,6 +96,16 @@ MainWindow::MainWindow()
     appExitCalled = false;
 
     m_ui->setupUi(this);
+    #ifdef WITH_XC_DBUS
+    #if defined(Q_OS_LINUX)
+    new MainWindowAdaptor(this);
+    QDBusConnection dbus = QDBusConnection::sessionBus();
+    dbus.registerObject("/keepassxc", this);
+    dbus.registerService("org.keepassxc.MainWindow");
+    #else
+    qWarning("DBus is not available on this system");
+    #endif
+    #endif
 
     // Setup the search widget in the toolbar
     SearchWidget *search = new SearchWidget();
@@ -817,3 +834,7 @@ void MainWindow::hideTabMessage()
     }
 }
 
+void MainWindow::closeAllDatabases()
+{
+    m_ui->tabWidget->closeAllDatabases();
+}

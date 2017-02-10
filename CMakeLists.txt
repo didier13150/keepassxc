@@ -37,6 +37,7 @@ option(WITH_COVERAGE "Use to build with coverage tests. (GCC ONLY)." OFF)
 option(WITH_XC_AUTOTYPE "Include Autotype." OFF)
 option(WITH_XC_HTTP "Include KeePassHTTP." OFF)
 option(WITH_XC_YUBIKEY "Include Yubikey support." OFF)
+option(WITH_XC_DBUS "Include DBus support." OFF)
 
 set(KEEPASSXC_VERSION "2.1.1")
 set(KEEPASSXC_VERSION_NUM "2.1.1")
@@ -166,6 +167,9 @@ find_package(Qt5Widgets       5.2 REQUIRED)
 find_package(Qt5Test          5.2 REQUIRED)
 find_package(Qt5LinguistTools 5.2 REQUIRED)
 find_package(Qt5Network       5.2 REQUIRED)
+if(UNIX AND NOT APPLE AND WITH_XC_DBUS)
+  find_package(Qt5DBus        5.2 REQUIRED)
+endif()
 set(CMAKE_AUTOMOC ON)
 
 # Debian sets the the build type to None for package builds.

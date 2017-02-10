@@ -150,6 +150,7 @@ set(keepassx_FORMS
 
 add_feature_info(KeePassHTTP WITH_XC_HTTP "KeePassHTTP support for ChromeIPass and PassIFox")
 add_feature_info(Autotype WITH_XC_AUTOTYPE "Auto-type passwords in Input fields")
+add_feature_info(DBus WITH_XC_DBUS "Take keepassxc control by DBus")
 
 if(WITH_XC_HTTP)
   set(keepasshttp_SOURCES
@@ -169,6 +170,13 @@ if(WITH_XC_HTTP)
   )
   set(keepasshttp_LIB keepasshttp)
   qt5_wrap_ui(keepasshttp_SOURCES ${keepasshttp_FORMS})
+endif()
+
+if(UNIX AND NOT APPLE AND WITH_XC_DBUS)
+    set(keepassx_SOURCES
+        ${keepassx_SOURCES}
+        gui/MainWindowAdaptor.cpp
+    )
 endif()
 
 add_subdirectory(autotype)
@@ -210,6 +218,10 @@ set(autotype_LIB autotype)
 add_library(keepassx_core STATIC ${keepassx_SOURCES})
 set_target_properties(keepassx_core PROPERTIES COMPILE_DEFINITIONS KEEPASSX_BUILDING_CORE)
 target_link_libraries(keepassx_core zxcvbn ${keepasshttp_LIB} ${autotype_LIB} Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network)
+
+if(UNIX AND NOT APPLE AND WITH_XC_DBUS)
+  target_link_libraries(keepassx_core Qt5::DBus)
+endif()
 
 add_executable(${PROGNAME} WIN32 MACOSX_BUNDLE ${keepassx_SOURCES_MAINEXE})
 target_link_libraries(${PROGNAME}

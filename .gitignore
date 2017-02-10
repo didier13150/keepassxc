@@ -1,2 +1,5 @@
 CMakeLists.txt.*
 build*/
+.directory
+.kdev4
+keepassxc.kdev4
